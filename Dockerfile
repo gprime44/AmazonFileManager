@@ -15,6 +15,4 @@ RUN ["mvn", "verify"]
 ADD src /code/src
 RUN ["mvn", "package"]
 
-RUN ["mvn", "dependency:purge-local-repository"]
-
 CMD ["/bin/sh", "-c", "java $JAVA_OPTS -jar /code/target/app.jar --spring.config.location=$SPRING_CONFIG_LOCATION"]
