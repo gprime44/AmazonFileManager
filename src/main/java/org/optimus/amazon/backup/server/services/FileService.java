@@ -86,6 +86,9 @@ public class FileService extends AbstractService {
 					folderDto.getFiles().add(fileDto);
 				}
 			}
+
+			LOGGER.debug("Found {} folders and {} files", folderDto.getFolders().size(), folderDto.getFiles().size());
+
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
@@ -106,9 +109,9 @@ public class FileService extends AbstractService {
 		return file;
 	}
 
-	public void delete(String login, String path) throws ServiceException {
-		Path localFile = Paths.get(localRootFolder).resolve(login).resolve(localDecodedFolder).resolve(path);
-		Path remotePath = Paths.get(localRootFolder).resolve(login).resolve(remoteDecodedFolder);
+	public void delete(String path) throws ServiceException {
+		Path localFile = Paths.get(localRootFolder).resolve(localDecodedFolder).resolve(path);
+		Path remotePath = Paths.get(localRootFolder).resolve(remoteDecodedFolder);
 		Path remoteFile = remotePath.resolve(path);
 
 		if (Files.exists(localFile)) {
@@ -125,7 +128,7 @@ public class FileService extends AbstractService {
 
 			String encodedPath = getEncodedPath(remotePath, path);
 
-			Path remoteEncodedPath = Paths.get(localRootFolder).resolve(login).resolve(remoteEncodedFolder).resolve(encodedPath);
+			Path remoteEncodedPath = Paths.get(localRootFolder).resolve(remoteEncodedFolder).resolve(encodedPath);
 			if (Files.exists(remoteEncodedPath)) {
 				LOGGER.debug("Encoded path {} found, so delete it on ACD", remoteEncodedPath);
 				CommandLine cl = new CommandLine("acd_cli");

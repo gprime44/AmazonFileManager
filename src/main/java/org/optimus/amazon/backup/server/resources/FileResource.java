@@ -76,13 +76,13 @@ public class FileResource extends AbstractResource {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)
-	public void getFolderContent(@RequestParam("path") String path) throws Exception {
+	public void delete(@RequestParam("path") String path) throws Exception {
 
 		String user = getUser();
 
 		if (StringUtils.equals(user, ADMIN_LOGIN)) {
-			LOGGER.info("User {} delete {}", user, path);
-			fileService.delete(getUser(), path);
+			LOGGER.info("User {} delete {}", path);
+			fileService.delete(path);
 		} else {
 			LOGGER.info("User {} can't delete file", user);
 		}
