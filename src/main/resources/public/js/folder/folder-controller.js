@@ -9,7 +9,7 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 		$scope.images = [];
 		$scope.folder = true;
 		
-		$http.get("/content?path=" + encodeURIComponent(data.path) + "&withFile=true").then(function(response) {
+		$http.get("/datamanager/content?path=" + encodeURIComponent(data.path) + "&withFile=true").then(function(response) {
 			$scope.foldercontent = response.data.folders;
 			$scope.foldercontent = $scope.foldercontent.concat(response.data.files);
 			$scope.folder = response.data;
@@ -21,7 +21,7 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 	}
 	
 	$scope.delete = function (data) {
-		$http.delete("/content?path=" + encodeURIComponent(data.path)).then(function(response) {
+		$http.delete("/datamanager/content?path=" + encodeURIComponent(data.path)).then(function(response) {
 			$scope.refresh();
 		});
 	}
@@ -52,13 +52,13 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 	
 	$scope.getUrl = function (data) {
 		if (data) {
-			return "/content/get?path=" + encodeURIComponent(data.path);
+			return "/datamanager/content/get?path=" + encodeURIComponent(data.path);
 		}
 	}
 	
 	$scope.downloadUrl = function (data) {
 		if (data) {
-			return "/content/download?path=" + encodeURIComponent(data.path);
+			return "/datamanager/content/download?path=" + encodeURIComponent(data.path);
 		}
 	}
 	

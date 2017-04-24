@@ -18,7 +18,7 @@ app.service('mainService', function() {
 			objXhr.addEventListener("load", transferComplete, false);
 
 			// SEND FILE DETAILS TO THE API.
-			objXhr.open("POST", "/content");
+			objXhr.open("POST", "/datamanager/content");
 			objXhr.send(data);
 
 			manageUpload();

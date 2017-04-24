@@ -5,7 +5,7 @@ app.controller("mainController", function($scope, $rootScope, $http, $timeout,
 	$scope.uploadInProgress = [];
 	$scope.uploadedFiles = [];
 
-	$http.get("/account").then(function(response) {
+	$http.get("/datamanager/account").then(function(response) {
 		$scope.status = response.data;
 	});
 
@@ -15,7 +15,7 @@ app.controller("mainController", function($scope, $rootScope, $http, $timeout,
 			data.append("from", dragged);
 			data.append("to", dropped);
 
-			$http.post("/content/move", data).then(function(response) {
+			$http.post("/datamanager/content/move", data).then(function(response) {
 				$rootScope.$broadcast('refreshData', dragged.parent);
 				$rootScope.$broadcast('refreshData', dropped.path);
 			});

@@ -1,7 +1,7 @@
 app.controller("treeController", function($scope, $rootScope, $http, $timeout,
 		treeService) {
 
-	$http.get("/content?withFile=false").then(function(response) {
+	$http.get("/datamanager/content?withFile=false").then(function(response) {
 		$scope.treeData = response.data;
 	});
 
@@ -31,7 +31,7 @@ app.controller("treeController", function($scope, $rootScope, $http, $timeout,
 
 	$scope.expand = function(data) {
 		$http.get(
-				"/content?path=" + encodeURIComponent(data.path)
+				"/datamanager/content?path=" + encodeURIComponent(data.path)
 						+ "&withFile=false").then(function(response) {
 			data.files = response.data.files;
 			data.folders = response.data.folders;
