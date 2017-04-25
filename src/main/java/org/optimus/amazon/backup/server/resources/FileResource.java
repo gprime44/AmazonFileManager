@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.optimus.amazon.backup.server.dto.FolderDto;
+import org.optimus.amazon.backup.server.dto.UserDto;
 import org.optimus.amazon.backup.server.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +27,6 @@ public class FileResource extends AbstractResource {
 
 	@Autowired
 	private FileService fileService;
-
-	@Value("${admin.login}")
-	private String ADMIN_LOGIN;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public FolderDto getFolderContent(@RequestParam(required = false, name = "path") String path, //
@@ -78,9 +76,9 @@ public class FileResource extends AbstractResource {
 	@RequestMapping(method = RequestMethod.DELETE)
 	public void delete(@RequestParam("path") String path) throws Exception {
 
-		String user = getUser();
+		UserDto user = getUser();
 
-		if (StringUtils.equals(user, ADMIN_LOGIN)) {
+		if (user.isAdmin()) {
 			LOGGER.info("User {} delete {}", path);
 			fileService.delete(path);
 		} else {
@@ -92,9 +90,9 @@ public class FileResource extends AbstractResource {
 	public void addFile(@RequestParam("path") String path, //
 			@RequestParam("file") MultipartFile[] files) throws Exception {
 
-		String user = getUser();
+		UserDto user = getUser();
 
-		if (StringUtils.equals(user, ADMIN_LOGIN)) {
+		if (user.isAdmin()) {
 			LOGGER.info("User {} add files to {}", user, path);
 			fileService.saveFiles(path, files);
 		} else {

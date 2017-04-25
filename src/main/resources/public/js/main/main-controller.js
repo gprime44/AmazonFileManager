@@ -6,19 +6,23 @@ app.controller("mainController", function($scope, $rootScope, $http, $timeout,
 	$scope.uploadedFiles = [];
 
 	$http.get("/datamanager/account").then(function(response) {
-		$scope.status = response.data;
+		$rootScope.user = response.data;
 	});
 
 	$rootScope.$on('dropEvent', function(evt, dragged, dropped) {
-		if (dropped.files) {
-			var data = new FormData();
-			data.append("from", dragged);
-			data.append("to", dropped);
+		if ($rootScope.user.admin) {
+			if (dropped.files) {
+				var data = new FormData();
+				data.append("from", dragged);
+				data.append("to", dropped);
 
-			$http.post("/datamanager/content/move", data).then(function(response) {
-				$rootScope.$broadcast('refreshData', dragged.parent);
-				$rootScope.$broadcast('refreshData', dropped.path);
-			});
+				$http.post("/datamanager/content/move", data).then(
+						function(response) {
+							$rootScope
+									.$broadcast('refreshData', dragged.parent);
+							$rootScope.$broadcast('refreshData', dropped.path);
+						});
+			}
 		}
 	});
 

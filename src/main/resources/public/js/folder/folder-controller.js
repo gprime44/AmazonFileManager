@@ -21,13 +21,15 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 	}
 	
 	$scope.delete = function (data) {
-		$http.delete("/datamanager/content?path=" + encodeURIComponent(data.path)).then(function(response) {
-			$scope.refresh();
-		});
+		if ($rootScope.user.admin) {
+			$http.delete("/datamanager/content?path=" + encodeURIComponent(data.path)).then(function(response) {
+				$scope.refresh();
+			});
+		}
 	}
 	
 	$scope.canDelete = function (data) {
-		return !data.files;
+		return $rootScope.user.admin && !data.files;
 	}
 	
 	$scope.canDownload = function (data) {
@@ -66,6 +68,12 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 		$scope.selectedRow = data;
 	}
 	
+	$scope.openFolder = function(data) {
+		if (data.files) {
+			$rootScope.$broadcast('openFolder', data);
+		}
+	}
+	
 	$scope.changeDisplay = function (newDisplay) {
 		$scope.display = newDisplay;
 		var images = []
@@ -88,6 +96,6 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
     }
     
     $rootScope.$on('refreshData', function(evt, path) {
-		
+    	$scope.openFolder(path);
 	});
 });

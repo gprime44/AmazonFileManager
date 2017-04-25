@@ -75,6 +75,7 @@ public class FileService extends AbstractService {
 					subFolder.setPath(globalRootPath.relativize(entry).toString());
 					subFolder.setDateUpdate(new Date(Files.getLastModifiedTime(entry).toMillis()));
 					folderDto.getFolders().add(subFolder);
+					folderDto.setSize(folderDto.getSize() + subFolder.getSize());
 
 				} else if (withFile) {
 					FileDto fileDto = new FileDto();
@@ -84,6 +85,7 @@ public class FileService extends AbstractService {
 					fileDto.setPath(globalRootPath.relativize(entry).toString());
 					fileDto.setDateUpdate(new Date(Files.getLastModifiedTime(entry).toMillis()));
 					folderDto.getFiles().add(fileDto);
+					folderDto.setSize(folderDto.getSize() + fileDto.getSize());
 				}
 			}
 

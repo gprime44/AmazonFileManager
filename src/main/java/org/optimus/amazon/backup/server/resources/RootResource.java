@@ -1,5 +1,6 @@
 package org.optimus.amazon.backup.server.resources;
 
+import org.optimus.amazon.backup.server.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ public class RootResource extends AbstractResource {
 	private final static Logger LOGGER = LoggerFactory.getLogger(RootResource.class);
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String getContainerStats() throws Exception {
+	public UserDto getContainerStats() throws Exception {
 		LOGGER.info("User {} logged", getUser());
 		return getUser();
 	}
