@@ -32,6 +32,10 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 		return $rootScope.user.admin && !data.files;
 	}
 	
+	$scope.canUpload = function () {
+		return $rootScope.user.admin
+	}
+	
 	$scope.canDownload = function (data) {
 		return !data.files;
 	}

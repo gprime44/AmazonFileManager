@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,6 +96,23 @@ public class FileService extends AbstractService {
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
+
+		Collections.sort(folderDto.getFolders(), new Comparator<FolderDto>() {
+
+			@Override
+			public int compare(FolderDto o1, FolderDto o2) {
+				return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+			}
+		});
+		
+		Collections.sort(folderDto.getFiles(), new Comparator<FileDto>() {
+
+			@Override
+			public int compare(FileDto o1, FileDto o2) {
+				return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+			}
+		});
+
 		return folderDto;
 	}
 

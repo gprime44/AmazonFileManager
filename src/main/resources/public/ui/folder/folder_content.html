@@ -3,7 +3,8 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<h1>
-					{{folder.name}} <small>{{folder.path}} ({{folder.size/1024/1024 | number}} Mo)</small>
+					{{folder.name}} <small>{{folder.path}}
+						({{folder.size/1024/1024 | number}} Mo)</small>
 				</h1>
 			</div>
 			<div class="col-sm-4">
@@ -13,9 +14,9 @@
 						data-ng-click="changeDisplay('picture')"
 						class="glyphicon glyphicon-th folderButton"></a> <a
 						data-ng-click="changeDisplay('carousel')"
-						class="glyphicon glyphicon-picture folderButton"></a> <a
-						data-toggle="modal" data-target="#uploadModal"
-						class="glyphicon glyphicon-upload folderButton"></a> <a
+						class="glyphicon glyphicon-picture folderButton"></a>
+						<a data-toggle="modal" data-target="#uploadModal"
+						class="glyphicon glyphicon-upload folderButton" data-ng-show="canUpload()"></a> <a
 						data-ng-click="refresh()"
 						class="glyphicon glyphicon-refresh folderButton"></a>
 				</div>
@@ -30,11 +31,13 @@
 					<th data-ng-click="order('name')" style="cursor: pointer;">Nom</th>
 					<th data-ng-click="order('dateUpdate')" style="cursor: pointer;">Date
 						de modification</th>
-					<th data-ng-click="order('size')" style="cursor: pointer;">Taille (Mo)</th>
+					<th data-ng-click="order('size')" style="cursor: pointer;">Taille
+						(Mo)</th>
 					<th data-ng-click="order('state')" style="cursor: pointer;">Etat</th>
 					<th><i class="glyphicon glyphicon-eye-open"></i></th>
 					<th><i class="glyphicon glyphicon-download-alt"></i></th>
-					<th><i class="glyphicon glyphicon-remove"></i></th>
+					<th data-ng-show="canDelete(row)"><i
+						class="glyphicon glyphicon-remove"></i></th>
 				</tr>
 			</thead>
 			<tbody>

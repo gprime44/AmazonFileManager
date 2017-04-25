@@ -5,7 +5,7 @@ app.controller("mainController", function($scope, $rootScope, $http, $timeout,
 	$scope.uploadInProgress = [];
 	$scope.uploadedFiles = [];
 
-	$http.get("/datamanager/account").then(function(response) {
+	$http.get("/datamanager").then(function(response) {
 		$rootScope.user = response.data;
 	});
 
