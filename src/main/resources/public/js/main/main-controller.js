@@ -16,7 +16,7 @@ app.controller("mainController", function($scope, $rootScope, $http, $timeout,
 				data.append("from", dragged);
 				data.append("to", dropped);
 
-				$http.post("/datamanager/content/move", data).then(
+				$http.post("/datamanager/file/move", data).then(
 						function(response) {
 							$rootScope
 									.$broadcast('refreshData', dragged.parent);

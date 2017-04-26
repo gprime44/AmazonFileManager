@@ -22,7 +22,15 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 	
 	$scope.delete = function (data) {
 		if ($rootScope.user.admin) {
-			$http.delete("/datamanager/content?path=" + encodeURIComponent(data.path)).then(function(response) {
+			$http.delete("/datamanager/file?path=" + encodeURIComponent(data.path)).then(function(response) {
+				$scope.refresh();
+			});
+		}
+	}
+	
+	$scope.push = function (data) {
+		if ($rootScope.user.admin && (data.state != 'REMOTE')) {
+			$http.post("/datamanager/acd?path=" + encodeURIComponent(data.path)).then(function(response) {
 				$scope.refresh();
 			});
 		}
@@ -58,13 +66,13 @@ app.controller("folderController", function($scope, $rootScope, $http, $timeout,
 	
 	$scope.getUrl = function (data) {
 		if (data) {
-			return "/datamanager/content/get?path=" + encodeURIComponent(data.path);
+			return "/datamanager/file?path=" + encodeURIComponent(data.path);
 		}
 	}
 	
 	$scope.downloadUrl = function (data) {
 		if (data) {
-			return "/datamanager/content/download?path=" + encodeURIComponent(data.path);
+			return "/datamanager/download?path=" + encodeURIComponent(data.path);
 		}
 	}
 	

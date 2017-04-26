@@ -9,16 +9,11 @@
 			</div>
 			<div class="col-sm-4">
 				<div class="pull-right" style="margin-top: 20px">
-					<a data-ng-click="changeDisplay('table')"
-						class="glyphicon glyphicon-th-list folderButton"></a> <a
-						data-ng-click="changeDisplay('picture')"
-						class="glyphicon glyphicon-th folderButton"></a> <a
-						data-ng-click="changeDisplay('carousel')"
-						class="glyphicon glyphicon-picture folderButton"></a>
-						<a data-toggle="modal" data-target="#uploadModal"
-						class="glyphicon glyphicon-upload folderButton" data-ng-show="canUpload()"></a> <a
-						data-ng-click="refresh()"
-						class="glyphicon glyphicon-refresh folderButton"></a>
+					<a data-ng-click="changeDisplay('table')" class="glyphicon glyphicon-th-list folderButton"></a>
+					<a data-ng-click="changeDisplay('picture')"	class="glyphicon glyphicon-th folderButton"></a>
+					<a data-ng-click="changeDisplay('carousel')" class="glyphicon glyphicon-picture folderButton"></a>
+					<a data-toggle="modal" data-target="#uploadModal" class="glyphicon glyphicon-upload folderButton" data-ng-show="canUpload()"></a>
+					<a data-ng-click="refresh()" class="glyphicon glyphicon-refresh folderButton"></a>
 				</div>
 			</div>
 		</div>
@@ -29,36 +24,31 @@
 			<thead>
 				<tr>
 					<th data-ng-click="order('name')" style="cursor: pointer;">Nom</th>
-					<th data-ng-click="order('dateUpdate')" style="cursor: pointer;">Date
-						de modification</th>
-					<th data-ng-click="order('size')" style="cursor: pointer;">Taille
-						(Mo)</th>
+					<th data-ng-click="order('dateUpdate')" style="cursor: pointer;">Date de modification</th>
+					<th data-ng-click="order('size')" style="cursor: pointer;">Taille (Mo)</th>
 					<th data-ng-click="order('state')" style="cursor: pointer;">Etat</th>
 					<th><i class="glyphicon glyphicon-eye-open"></i></th>
 					<th><i class="glyphicon glyphicon-download-alt"></i></th>
-					<th data-ng-show="canDelete(row)"><i
-						class="glyphicon glyphicon-remove"></i></th>
+					<th data-ng-show="canDelete(row)"><i class="glyphicon glyphicon-remove"></i></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr data-ng-repeat="row in foldercontent | orderBy:folderOrderBy"
 					data-drag="row" data-dragStyle="drag" data-drop="row"
 					data-dropStyle="drop" data-ng-dblclick="openFolder(row)">
-					<td><i data-ng-class="getIcon(row)"
-						style="margin-right: 10px;"></i>{{row.name}}</td>
+					<td><i data-ng-class="getIcon(row)"	style="margin-right: 10px;"></i>{{row.name}}</td>
 					<td>{{ row.dateUpdate | date }}</td>
 					<td>{{ row.size/1024/1024 | number}}</td>
-					<td>{{ row.state }}</td>
-					<td data-toggle="modal" data-target="#myModal"
-						data-ng-click="preview(row)" data-ng-show="canPreview(row)"
-						style="cursor: pointer;"><i
-						class="glyphicon glyphicon-eye-open"></i></td>
-					<td data-ng-show="canDownload(row)" style="cursor: pointer;"><a
-						class="glyphicon glyphicon-download-alt"
-						href="{{downloadUrl(row)}}"></a></td>
-					<td data-ng-click="delete(row)" data-ng-show="canDelete(row)"
-						style="cursor: pointer;"><i
-						class="glyphicon glyphicon-remove"></i></td>
+					<td data-ng-click="push(row)" style="cursor: pointer;">{{ row.state }}</td>
+					<td data-toggle="modal" data-target="#myModal" data-ng-click="preview(row)" data-ng-show="canPreview(row)" style="cursor: pointer;">
+						<i class="glyphicon glyphicon-eye-open"></i>
+					</td>
+					<td data-ng-show="canDownload(row)" style="cursor: pointer;">
+						<a class="glyphicon glyphicon-download-alt" href="{{downloadUrl(row)}}"></a>
+					</td>
+					<td data-ng-show="canDelete(row)" data-ng-click="delete(row)" style="cursor: pointer;">
+						<i class="glyphicon glyphicon-remove"></i>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -76,8 +66,7 @@
 			data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
-				<li data-ng-repeat="img in images"
-					data-target="#carousel-example-generic" data-slide-to="{{$index}}"></li>
+				<li data-ng-repeat="img in images" data-target="#carousel-example-generic" data-slide-to="{{$index}}"></li>
 			</ol>
 
 			<!-- Wrapper for slides -->
