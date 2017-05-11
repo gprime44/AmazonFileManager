@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,14 +24,14 @@ import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.optimus.amazon.backup.server.dto.FileDto;
 import org.optimus.amazon.backup.server.dto.FileDto.STATE;
 import org.optimus.amazon.backup.server.dto.FolderDto;
 import org.optimus.amazon.backup.server.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +39,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService extends AbstractService {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(FileService.class);
+
+	@Autowired
+	private Environment env;
 
 	public FolderDto getFolderContent(String folder, boolean withFile) throws ServiceException {
 		Path globalRootPath = Paths.get(localRootFolder).resolve(localGlobalFolder);
@@ -60,7 +60,7 @@ public class FileService extends AbstractService {
 
 		FolderDto folderDto = new FolderDto();
 		folderDto.setPath(folder);
-		folderDto.setName(folderToScan.getFileName().toString());
+		folderDto.setName(getFolderLabel(folderToScan.getFileName().toString()));
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderToScan)) {
 			for (Path entry : stream) {
 				boolean isLocal = Files.exists(localDecodedPath.resolve(globalRootPath.relativize(entry)));
@@ -75,7 +75,7 @@ public class FileService extends AbstractService {
 
 				if (Files.isDirectory(entry)) {
 					FolderDto subFolder = new FolderDto();
-					subFolder.setName(entry.getFileName().toString());
+					subFolder.setName(getFolderLabel(entry.getFileName().toString()));
 					subFolder.setSize(Files.size(entry));
 					subFolder.setState(state);
 					subFolder.setPath(globalRootPath.relativize(entry).toString());
@@ -118,6 +118,10 @@ public class FileService extends AbstractService {
 		});
 
 		return folderDto;
+	}
+
+	private String getFolderLabel(String folder) {
+		return env.getProperty("folder.label." + folder, folder);
 	}
 
 	public Path getFileInGlobalFolder(String path) throws ServiceException {
@@ -174,7 +178,7 @@ public class FileService extends AbstractService {
 	}
 
 	private String getEncodedPath(Path rootPath, String path) throws ServiceException {
-		LOGGER.debug("Get encoded path for {} on {}", path, rootPath);
+		LOGGER.debug("Get encoded path for {} on {}", rootPath.toAbsolutePath().toString(), rootPath);
 
 		CommandLine cl = new CommandLine("encfsctl");
 		cl.addArgument("encode");
